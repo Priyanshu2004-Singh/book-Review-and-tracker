@@ -46,7 +46,7 @@ Edit
 bash
 Copy
 Edit
-git clone https://github.com/yourusername/book-tracker.git
+git clone https://github.com/priyanshu2004-Singh/book-Review-and-tracker.git
 cd book-tracker
 2️⃣ Install dependencies
 bash
@@ -82,4 +82,5 @@ Add Book Page
 Pull requests are welcome! For major changes, please open an issue first to discuss what you’d like to change.
 
 📜 License
+
 This project is licensed under the MIT License.
