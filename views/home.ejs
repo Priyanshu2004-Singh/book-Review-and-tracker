@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title><%= title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .hero-bg {
+      background: linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.8)),
+                  url('https://images.unsplash.com/photo-1507842217343-583fd1c609ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') 
+                  no-repeat center center;
+      background-size: cover;
+    }
+    .glass-card {
+      backdrop-filter: blur(10px);
+      background-color: rgba(31, 41, 55, 0.7);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 1s ease-out forwards;
+    }
+    .animate-delay-200 {
+      animation-delay: 0.2s;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-100 antialiased">
+
+  <!-- Header -->
+  <header class="bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-md shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+      <a href="/" class="text-3xl font-extrabold tracking-tight text-indigo-400 flex items-center">
+        <i class="fas fa-book-open mr-3"></i>
+        <span><%= title %></span>
+      </a>
+      <nav class="hidden md:flex space-x-8 text-gray-300 font-medium">
+        <a href="/add-book" class="hover:text-indigo-400 transition-colors duration-200">Add Books</a>
+        <a href="/books" class="hover:text-indigo-400 transition-colors duration-200">All Books</a>
+        <a href="/tags" class="hover:text-indigo-400 transition-colors duration-200">Tags</a>
+        <a href="/stats" class="hover:text-indigo-400 transition-colors duration-200">Stats</a>
+        <a href="/about" class="hover:text-indigo-400 transition-colors duration-200">About</a>
+      </nav>
+      <div class="flex items-center space-x-4">
+        <% if (user) { %>
+          <span class="text-gray-300 font-semibold">Welcome, <%= user.username %>!</span>
+          <form action="/logout" method="POST" class="inline">
+            <button type="submit" 
+              class="px-5 py-2 bg-red-600 text-white rounded-full font-semibold hover:bg-red-500 transition-colors duration-200 transform hover:scale-105 shadow-lg">
+              Logout
+            </button>
+          </form>
+        <% } else { %>
+          <a href="/login" class="px-5 py-2 bg-indigo-600 text-white rounded-full font-semibold hover:bg-indigo-500 transition-colors duration-200 transform hover:scale-105 shadow-lg">Login</a>
+          <a href="/signup" class="px-5 py-2 bg-yellow-500 text-gray-900 rounded-full font-bold hover:bg-yellow-400 transition-colors duration-200 transform hover:scale-105 shadow-lg">Sign Up</a>
+        <% } %>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero-bg py-24 sm:py-32 text-center text-white">
+    <div class="max-w-4xl mx-auto px-4">
+      <h1 class="text-5xl sm:text-6xl font-extrabold leading-tight mb-4 animate-fade-in">Track, Rate & Review Your Books</h1>
+      <p class="text-lg sm:text-xl text-gray-300 mb-10 opacity-0 animate-fade-in animate-delay-200">
+        Never forget what you read — keep all your book notes and highlights in one beautifully organized place.
+      </p>
+
+      <form action="/search" method="GET" class="max-w-2xl mx-auto flex">
+        <div class="relative w-full">
+          <input 
+            type="text" 
+            name="q" 
+            placeholder="Search books, authors, or tags..." 
+            class="w-full pl-6 pr-16 py-3 rounded-full border-2 border-gray-700 bg-gray-800 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 shadow-xl"
+          >
+          <button type="submit" class="absolute right-0 top-0 mt-1 mr-2 px-4 py-2 bg-indigo-600 text-white rounded-full font-bold hover:bg-indigo-500 transition-colors duration-200 transform hover:scale-105">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Featured Books -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="flex justify-between items-center mb-10">
+      <h2 class="text-3xl font-extrabold text-indigo-400 tracking-wide">Featured Books</h2>
+      <a href="/books" class="text-indigo-300 hover:text-indigo-400 font-medium flex items-center transition-colors duration-200">
+        View All
+        <i class="fas fa-arrow-right ml-2"></i>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <% books.forEach(book => { %>
+        <div class="bg-gray-800 rounded-2xl overflow-hidden shadow-2xl hover:shadow-indigo-500/20 transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 border border-gray-700">
+          <img src="<%= book.cover_url %>" alt="<%= book.title %> cover" class="w-full h-72 object-cover object-center">
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-white leading-snug mb-1"><%= book.title %></h3>
+            <p class="text-gray-400 text-sm mb-4">by <%= book.author %></p>
+
+            <!-- Progress Badge / Bar -->
+            <% if (book.progress === 'Completed') { %>
+              <span class="inline-block px-3 py-1 text-sm font-semibold text-green-300 bg-green-800 rounded-full mb-4">✅ Completed</span>
+            <% } else if (book.progress === 'In Progress') { %>
+              <span class="inline-block px-3 py-1 text-sm font-semibold text-yellow-300 bg-yellow-800 rounded-full mb-4">📖 In Progress</span>
+            <% } else if (book.progress === 'Not Started') { %>
+              <span class="inline-block px-3 py-1 text-sm font-semibold text-gray-300 bg-gray-700 rounded-full mb-4">🕒 Not Started</span>
+            <% } else if (typeof book.progress === 'number') { %>
+              <div class="mb-4">
+                <div class="w-full bg-gray-700 rounded-full h-2.5">
+                  <div class="bg-indigo-500 h-2.5 rounded-full" style="width: <%= book.progress %>%"></div>
+                </div>
+                <p class="text-xs text-gray-400 mt-1"><%= book.progress %>% completed</p>
+              </div>
+            <% } %>
+
+            <a href="/books/<%= book.id %>" class="inline-flex items-center text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-200">
+              Read Notes
+              <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 border-t border-gray-800 mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-500">
+      <p>&copy; 2025 <%= title %>. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

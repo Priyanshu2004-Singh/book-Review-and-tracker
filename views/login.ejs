@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Log In to Your Account</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .bg-image {
+      background-image: url('https://images.unsplash.com/photo-1521587765099-8835e72951d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .form-overlay {
+      background: rgba(17, 24, 39, 0.85);
+    }
+    .input-field {
+      border: 1px solid #4B5563;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-100 antialiased bg-image">
+
+  <div class="min-h-screen flex items-center justify-center p-6 form-overlay">
+
+    <div class="bg-gray-800 bg-opacity-90 backdrop-filter backdrop-blur-sm p-8 md:p-10 rounded-3xl shadow-2xl w-full max-w-md border border-gray-700 transform transition-all duration-300 hover:scale-[1.01]">
+      <div class="text-center mb-8">
+        <a href="/" class="inline-block text-4xl font-extrabold tracking-tight text-indigo-400 mb-2">📚</a>
+        <h1 class="text-3xl font-bold text-white mb-2">Log In to Your Account</h1>
+        <p class="text-gray-400">Welcome back! Please log in to continue your journey.</p>
+      </div>
+
+      <!-- Flash Message Section -->
+      <% if (messages && messages.error) { %>
+        <div class="mb-4 p-3 text-red-700 bg-red-100 rounded-lg border border-red-300">
+          <%= messages.error %>
+        </div>
+      <% } %>
+      <% if (messages && messages.success) { %>
+        <div class="mb-4 p-3 text-green-700 bg-green-100 rounded-lg border border-green-300">
+          <%= messages.success %>
+        </div>
+      <% } %>
+
+      <!-- Login Form -->
+      <form action="/login" method="POST" class="space-y-6">
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-300 mb-1">Username</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fas fa-user text-gray-500"></i>
+            </div>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              placeholder="Your username" 
+              required 
+              class="w-full pl-10 pr-4 py-3 rounded-xl input-field bg-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+            >
+          </div>
+        </div>
+        
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="fas fa-lock text-gray-500"></i>
+            </div>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              placeholder="••••••••" 
+              required 
+              class="w-full pl-10 pr-4 py-3 rounded-xl input-field bg-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+            >
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          class="w-full px-5 py-3 mt-4 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-500 transition-colors duration-200 transform hover:scale-105 shadow-lg"
+        >
+          Log In
+        </button>
+      </form>
+
+      <div class="text-center mt-6">
+        <p class="text-gray-400 text-sm">
+          Don't have an account? 
+          <a href="/signup" class="text-indigo-400 hover:underline font-semibold">Sign Up here</a>
+        </p>
+      </div>
+      
+    </div>
+  </div>
+
+</body>
+</html>
